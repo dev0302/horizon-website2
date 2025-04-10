@@ -1,62 +1,62 @@
 class Typewriter {
-  constructor(element, text, options = {}) {
-    this.element = element;
-    this.text = text;
-    this.options = {
-      typingSpeed: 100,
-      deletingSpeed: 50,
-      pauseTime: 2000,
-      ...options
-    };
-    this.isDeleting = false;
-    this.currentText = '';
-    this.currentIndex = 0;
-    this.timeout = null;
-  }
-
-  type() {
-    if (this.isDeleting) {
-      this.currentText = this.text.substring(0, this.currentIndex - 1);
-      this.currentIndex--;
-    } else {
-      this.currentText = this.text.substring(0, this.currentIndex + 1);
-      this.currentIndex++;
+    constructor(element, text, options = {}) {
+        this.element = element;
+        this.text = text;
+        this.speed = options.speed || 100;
+        this.deleteSpeed = options.deleteSpeed || 50;
+        this.pauseTime = options.pauseTime || 2000;
+        this.timeout = null;
     }
 
-    this.element.textContent = this.currentText.toUpperCase();
-
-    let typingSpeed = this.isDeleting ? this.options.deletingSpeed : this.options.typingSpeed;
-
-    if (!this.isDeleting && this.currentText === this.text) {
-      typingSpeed = this.options.pauseTime;
-      this.isDeleting = true;
-    } else if (this.isDeleting && this.currentText === '') {
-      this.isDeleting = false;
-      this.currentIndex = 0;
+    type() {
+        let i = 0;
+        const type = () => {
+            if (i < this.text.length) {
+                this.element.textContent = this.text.substring(0, i + 1);
+                i++;
+                this.timeout = setTimeout(type, this.speed);
+            } else {
+                setTimeout(() => this.delete(), this.pauseTime);
+            }
+        };
+        type();
     }
 
-    this.timeout = setTimeout(() => this.type(), typingSpeed);
-  }
+    delete() {
+        let i = this.text.length;
+        const del = () => {
+            if (i > 1) {
+                this.element.textContent = this.text.substring(0, i - 1);
+                i--;
+                this.timeout = setTimeout(del, this.deleteSpeed);
+            } else {
+                setTimeout(() => this.type(), this.pauseTime);
+            }
+        };
+        del();
+    }
 
-  start() {
-    this.type();
-  }
+    start() {
+        this.type();
+    }
 
-  stop() {
-    clearTimeout(this.timeout);
-  }
+    stop() {
+        if (this.timeout) {
+            clearTimeout(this.timeout);
+        }
+    }
 }
 
-// Initialize typing effect when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-  const upcomingEventTitle = document.querySelector('.upcoming-event-title');
-  if (upcomingEventTitle) {
-    const text = upcomingEventTitle.textContent;
-    const typewriter = new Typewriter(upcomingEventTitle, text, {
-      typingSpeed: 100,
-      deletingSpeed: 50,
-      pauseTime: 2000
-    });
-    typewriter.start();
-  }
+    // Date text animation
+    const revealSoonText = document.querySelector('.day .typing-text');
+    
+    if (revealSoonText) {
+        const typewriter = new Typewriter(revealSoonText, 'Reveal Soon', {
+            speed: 100,
+            deleteSpeed: 50,
+            pauseTime: 2000
+        });
+        typewriter.start();
+    }
 }); 
