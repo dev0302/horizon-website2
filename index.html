@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" style="scroll-behavior: smooth;">
 <head>
+
+  <!-- AOS ANIMATIONS -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <style>
+        /* Optional: Add this if you want animations to be smoother */
+        [data-aos] {
+            transition-property: transform, opacity;
+        }
+    </style>
+
+
   <!-- Basic Meta Tags -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,6 +55,7 @@
           <a href="#home" class="nav-item">Home</a>
           <a href="#about-us" class="nav-item">About Us</a>
           <a href="#family" class="nav-item">Family</a>
+          <a href="#upcoming-event-section" class="nav-item">Upcoming Events</a>
           <a href="#event-section" class="nav-item">Events</a>
         </div>
     
@@ -122,18 +135,18 @@
       <!-- About Us Section -->
       <div class="about-content" id="about-us">
         <div class="main-section">
-          <div class="content-left">
-            <p id="about_us_para">About Us</p>
-            <p class="section-description">
-              Horizon isn't just a society — it's a movement of minds, a space where voices rise, ideas collide, and thought finds its true horizon. Here, words aren't mere sounds; they are forces that challenge conventions, spark conversations, and inspire change. At Horizon, we don't debate to dominate — we speak to understand, we listen to grow, and we think to transform. From the power of the spoken word to the strength of silent reflections, Horizon becomes the canvas for expression, intellect, and empathy. It is a community of thoughtful rebels — curious enough to question, bold enough to speak, and wise enough to listen. More than anything, Horizon is where the art of reason meets the heart of expression — a sanctuary where every perspective matters, and every voice is heard.
-            </p>
-          </div>
-
-          <div class="content-right">
-            <div class="image-container">
-              <img src="tech_talk_images/grouppic.jpg" class="section-image" alt="Horizon Group Photo">
+            <div class="content-left" data-aos="fade-up">
+                <p id="about_us_para" data-aos="fade-up">About Us</p>
+                <p class="section-description" data-aos="fade-up">
+                    Horizon isn't just a society — it's a movement of minds, a space where voices rise, ideas collide, and thought finds its true horizon. Here, words aren't mere sounds; they are forces that challenge conventions, spark conversations, and inspire change. At Horizon, we don't debate to dominate — we speak to understand, we listen to grow, and we think to transform. From the power of the spoken word to the strength of silent reflections, Horizon becomes the canvas for expression, intellect, and empathy. It is a community of thoughtful rebels — curious enough to question, bold enough to speak, and wise enough to listen. More than anything, Horizon is where the art of reason meets the heart of expression — a sanctuary where every perspective matters, and every voice is heard.
+                </p>
             </div>
-          </div>
+
+            <div class="content-right" data-aos="fade-up" data-aos-delay="200" data-aos-easing="ease-out">
+                <div class="image-container">
+                    <img src="tech_talk_images/grouppic.jpg" class="section-image" alt="Horizon Group Photo">
+                </div>
+            </div>
         </div>
       </div>
 
@@ -582,7 +595,7 @@
                   <span class="event-location"><i data-feather="map-pin"></i> BVCOE Campus</span>
                   <span class="event-prize"><i data-feather="award"></i> Prize Pool: ₹70,000</span>
                 </div>
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSeQPYk6z-Lnmm8dtobj--T9cnlo9nmMyfNAR-gb5vrYJUc89Q/closedform" class="event-link" target="_blank">Register Now <i data-feather="arrow-right"></i></a>
+                <a href="0MUN_WEBSITE/bvc_mun.html" class="event-link" target="_blank">Click Here For Detailed Mun Info <i data-feather="arrow-right"></i></a>
               </div>
             </div>
             <div class="event-image">
@@ -628,7 +641,7 @@
         <div class="event-orb event-orb-violet"></div>
       </div>
 
-      <h2 class="event-section-title">OUR EVENTS</h2>
+      <h2 class="event-section-title">PAST EVENTS</h2>
           <div class="event-timeline">
             <!-- Tech Talks Event -->
             <div class="event-timeline-item card-fade-in">
@@ -641,8 +654,8 @@
                 <p class="event-timeline-description">
               The "Tech talk" Event happened at the BVCOE Library.
                 </p>
-                <div class="event-timeline-images-wrapper">
-                  <div class="event-timeline-images">
+                <div class="event-timeline-images-wrapper" data-aos="fade-up">
+                  <div class="event-timeline-images" data-aos="fade-up">
                     <img src="tech_talk_images/libpic1.jpg" alt="Tech Talk 1" class="image-fade-in">
                     <img src="tech_talk_images/libpic2.jpg" alt="Tech Talk 2" class="image-fade-in">
                     <img src="tech_talk_images/libpic3.jpg" alt="Tech Talk 1" class="image-fade-in">
@@ -665,8 +678,8 @@
                 <p class="event-timeline-description">
                   Online debate conducted by horizon, on the topic: "one nation one election".
                 </p>
-                <div class="event-timeline-images-wrapper">
-                  <div class="event-timeline-images">
+                <div class="event-timeline-images-wrapper" data-aos="fade-up">
+                  <div class="event-timeline-images" data-aos="fade-up">
                     <img src="vimarsh_images/1.jpg" alt="Vimarsh 1" class="image-fade-in">
                     <img src="vimarsh_images/2.jpg" alt="Vimarsh 2" class="image-fade-in">
                     <img src="vimarsh_images/3.jpg" alt="Vimarsh 1" class="image-fade-in">
@@ -727,6 +740,25 @@
 
   <script>
     feather.replace();
+  </script>
+
+  <!-- AOS LIBRARY -->
+  <script>
+    // Initialize AOS (Animate On Scroll)
+    document.addEventListener('DOMContentLoaded', function() {
+        AOS.init({
+            duration: 800,        // Restored original duration
+            once: true,           // Whether animation should happen only once
+            offset: 50,           // Reduced from 120 to 50 to trigger animations earlier
+            easing: 'ease-in-out' // Restored original easing
+        });
+
+        // Add specific settings for about us section
+        const aboutElements = document.querySelectorAll('#about-us [data-aos]');
+        aboutElements.forEach(element => {
+            element.setAttribute('data-aos-offset', '30');  // Even earlier trigger for about section
+        });
+    });
   </script>
 </body>
 </html>

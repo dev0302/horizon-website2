@@ -36,4 +36,17 @@ function initSmoothScrolling() {
     initMobileMenu();
   });
 
+// Update active link based on scroll position
+const sections = document.querySelectorAll('section');
+let current = '';
+
+sections.forEach(section => {
+    const sectionTop = section.offsetTop;
+    const sectionHeight = section.clientHeight;
+    if (window.scrollY >= sectionTop - 200) {
+        current = section.getAttribute('id');
+    }
+});
+
+
   

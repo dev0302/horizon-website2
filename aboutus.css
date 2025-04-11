@@ -21,14 +21,14 @@
     flex-direction: column;
     gap:1.4rem;
     opacity: 0;
-    transform: translateY(100px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    /* transform: translateY(100px); */
+    /* transition: opacity 0.8s ease-out, transform 0.8s ease-out; */
   }
   
-  .content-left.scroll-reveal {
+  /* .content-left.scroll-reveal {
     opacity: 1;
     transform: translateY(0);
-  }
+  } */
   
   #about_us_para{
     font-size: 2.15rem;
@@ -41,13 +41,16 @@
     max-width: 90%;
   }
   
-  .content-right{
+  .content-right {
     display: flex;
     justify-content: center;
     align-items: center;
-    
+    /* will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000; */
   }
-  .image-container{
+  .image-container {
     margin-top: 3.2rem;
     max-height: 350px;
     overflow: hidden;
@@ -55,11 +58,22 @@
     border-radius: 25px;
     height: 57vh;
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+    /* will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000; */
   }
-  .section-image{
+  .section-image {
     height: 100%;
     width: 100%;
-    
+    object-fit: cover;
+    border-radius: 25px;
+    transition: transform 0.6s ease, filter 0.6s ease;
+    filter: grayscale(0.1) brightness(0.95);
+    /* will-change: transform, filter;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000; */
   }
 
    /* Small Mobile Devices */
@@ -81,6 +95,8 @@
     }
     
     .image-container {
+      transform: none;
+      will-change: auto;
       height: 40vh;
       margin-top: 1.5rem;
     }
@@ -92,6 +108,17 @@
     .section-description {
       font-size: 0.75rem;
       text-align: left;
+    }
+    
+    .content-right {
+        transform: none;
+        will-change: auto;
+    }
+    
+    .section-image {
+        transform: none;
+        will-change: auto;
+        transition: none;
     }
   }
 
@@ -151,19 +178,19 @@
   /* Initial state before scroll */
   .scroll-hidden {
     opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s ease-out;
+    /* transform: translateY(30px); */
+    /* transition: all 0.8s ease-out; */
   }
   
   /* Reveal with animation */
   .scroll-reveal-left {
     opacity: 1;
-    transform: translateX(0);
+    /* transform: translateX(0); */
   }
   
   .scroll-reveal-zoom {
     opacity: 1;
-    transform: scale(1);
+    /* transform: scale(1); */
   }
   
   /* Specific for text sliding in from left */
@@ -174,14 +201,6 @@
   /* Specific for image zoom */
   .image-container.scroll-hidden {
     transform: scale(0.85);
-  }
-  .section-image {
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-    border-radius: 25px;
-    transition: transform 0.6s ease, filter 0.6s ease;
-    filter: grayscale(0.1) brightness(0.95); /* subtle tone adjustment */
   }
 
   .image-container:hover .section-image {
@@ -309,4 +328,3 @@
       transform: none;
     }
   }
-  
