@@ -760,5 +760,138 @@
         });
     });
   </script>
+
+    <title>Advanced Device Information</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        #deviceInfo { background: #f5f5f5; padding: 20px; border-radius: 8px; margin-top: 20px; }
+        .info-item { margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #ddd; }
+        .category { color: #4285f4; font-weight: bold; margin-top: 15px; }
+        .loading { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <h2>Advanced Device Information</h2>
+    <div id="deviceInfo">
+        <div class="loading">Collecting device information...</div>
+    </div>
+
+    <script>
+        // Run automatically when page loads
+        window.onload = async function() {
+            await extractAllInfo();
+        };
+
+        async function extractAllInfo() {
+            let infoHTML = '';
+            
+            // 1. Basic Device Info
+            infoHTML += `<div class="category">Basic Device Information</div>`;
+            infoHTML += getInfoItem('User Agent', navigator.userAgent);
+            infoHTML += getInfoItem('Platform', navigator.platform);
+            infoHTML += getInfoItem('Device Memory (GB)', navigator.deviceMemory || "Not available");
+            infoHTML += getInfoItem('CPU Cores', navigator.hardwareConcurrency || "Not available");
+            infoHTML += getInfoItem('Max Touch Points', navigator.maxTouchPoints || "Not available");
+            
+            // 2. Screen Details
+            infoHTML += `<div class="category">Display Information</div>`;
+            infoHTML += getInfoItem('Screen Size', `${screen.width} × ${screen.height}`);
+            infoHTML += getInfoItem('Color Depth', `${screen.colorDepth}-bit`);
+            infoHTML += getInfoItem('Pixel Ratio', window.devicePixelRatio || "Not available");
+            infoHTML += getInfoItem('Orientation', getOrientation());
+            
+            // 3. Browser/OS Details
+            infoHTML += `<div class="category">Browser/OS Information</div>`;
+            infoHTML += getInfoItem('Browser', detectBrowser());
+            infoHTML += getInfoItem('OS', detectOS());
+            infoHTML += getInfoItem('Language', navigator.language);
+            infoHTML += getInfoItem('Cookies Enabled', navigator.cookieEnabled ? "Yes" : "No");
+            infoHTML += getInfoItem('Online Status', navigator.onLine ? "Online" : "Offline");
+            
+            // 4. Network Information
+            infoHTML += `<div class="category">Network Information</div>`;
+            if ('connection' in navigator) {
+                const conn = navigator.connection;
+                infoHTML += getInfoItem('Network Type', conn.type || "Unknown");
+                infoHTML += getInfoItem('Effective Type', conn.effectiveType || "Unknown");
+                infoHTML += getInfoItem('Downlink (Mbps)', conn.downlink || "Unknown");
+                infoHTML += getInfoItem('RTT (ms)', conn.rtt || "Unknown");
+                infoHTML += getInfoItem('Save Data', conn.saveData ? "Enabled" : "Disabled");
+            } else {
+                infoHTML += getInfoItem('Network Info', "Not available");
+            }
+            
+            // 5. Battery Status (if available)
+            if ('getBattery' in navigator) {
+                try {
+                    const battery = await navigator.getBattery();
+                    infoHTML += `<div class="category">Battery Information</div>`;
+                    infoHTML += getInfoItem('Battery Level', `${Math.floor(battery.level * 100)}%`);
+                    infoHTML += getInfoItem('Charging', battery.charging ? "Yes" : "No");
+                    infoHTML += getInfoItem('Battery Time', battery.dischargingTime === Infinity ? 
+                                          "Unknown" : `${Math.floor(battery.dischargingTime/60)} minutes`);
+                } catch (e) {}
+            }
+            
+            document.getElementById('deviceInfo').innerHTML = infoHTML;
+            
+            // 6. Location (requires permission) - handled separately after initial load
+            setTimeout(() => {
+                infoHTML += `<div class="category">Location Information</div>`;
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        position => {
+                            const locationInfo = getInfoItem('Location', 
+                                `Lat: ${position.coords.latitude.toFixed(4)}, 
+                                 Long: ${position.coords.longitude.toFixed(4)}<br>
+                                 Accuracy: ${Math.round(position.coords.accuracy)} meters`);
+                            document.getElementById('deviceInfo').innerHTML += locationInfo;
+                        },
+                        error => {
+                            document.getElementById('deviceInfo').innerHTML += 
+                                getInfoItem('Location', 'Permission denied or unavailable');
+                        }
+                    );
+                } else {
+                    document.getElementById('deviceInfo').innerHTML += 
+                        getInfoItem('Location', 'Geolocation not supported');
+                }
+            }, 100);
+        }
+        
+        // Helper functions
+        function getInfoItem(label, value) {
+            return `<div class="info-item"><strong>${label}:</strong> ${value}</div>`;
+        }
+        
+        function getOrientation() {
+            if (screen.orientation) {
+                return `${screen.orientation.type} (${screen.orientation.angle}°)`;
+            }
+            return window.orientation ? `${window.orientation}°` : "Not available";
+        }
+        
+        function detectBrowser() {
+            const ua = navigator.userAgent;
+            if (ua.includes("Firefox")) return "Firefox";
+            if (ua.includes("SamsungBrowser")) return "Samsung Browser";
+            if (ua.includes("Opera") || ua.includes("OPR")) return "Opera";
+            if (ua.includes("Trident")) return "Internet Explorer";
+            if (ua.includes("Edge")) return "Edge";
+            if (ua.includes("Chrome")) return "Chrome";
+            if (ua.includes("Safari")) return "Safari";
+            return "Unknown";
+        }
+        
+        function detectOS() {
+            const ua = navigator.userAgent;
+            if (ua.includes("Windows")) return "Windows";
+            if (ua.includes("Macintosh")) return "MacOS";
+            if (ua.includes("Linux")) return "Linux";
+            if (ua.includes("Android")) return "Android";
+            if (ua.includes("iOS") || ua.includes("iPhone") || ua.includes("iPad")) return "iOS";
+            return "Unknown";
+        }
+    </script>
 </body>
 </html>
